@@ -1,0 +1,16 @@
+a.nano-btn.collapsed:before
+{
+    content:'+' ;
+
+}
+
+a.nano-btn:before
+{
+    content:'-' ;
+
+} 
+
+textarea.richedit
+{
+    
+}

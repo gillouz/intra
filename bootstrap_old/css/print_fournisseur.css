@@ -1,0 +1,35 @@
+.col-md-3 .form-group label{font-size:12px}
+
+@media print
+{
+	.hidden-print
+	{
+		display:none !important
+	}
+	body{13px}
+	.container{width:100%}
+	.col-md-4{width:150px;display:inline-block}
+	.col-md-4 .form-group label{visibility:hidden}
+	.col-md-3{display:inline-block;font-size:13px}
+	.col-md-3 .form-group label{font-size:13px;font-weight:unset}
+	h1
+	{
+	  font-size:0px;position:relative;left:400px
+	}
+
+	h1:after{position:relative;left:520px;padding-top:50px;font-weight:bold;font-size:12px;content: "Fournisseur"}
+	h4{text-decoration:underline;font-size:13px;font-weight:bold}
+	.btn{visibility:hidden}
+	#sav_marque{visibility:visible}
+	#adresse{position:relative;top:-40px;padding-bottom:20px;width:200px}
+	#sav_code_article,#sav_article,#sav_type_article,#sav_marque{visibility:hidden;position:absolute}
+
+	.form-group input{font-size:13px}
+	#designation,#nr_serie,#nom,#date,#marque {visibility:visible;font-size:12px}
+	#sav_designation{margin-bottom:30px}
+
+	
+}
+	
+@page { size: portrait; } ; 
+

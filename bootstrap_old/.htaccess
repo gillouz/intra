@@ -1,0 +1,26 @@
+#AuthName message
+#AuthUserFile /usr/local/bin/wwwpasswd/.htpasswd
+#AuthGroupFile /dev/null
+#AuthType Basic
+
+#<limit GET POST>
+#order deny,allow
+#deny from all
+#allow from 192.168
+#allow from 194.209
+#allow from 213.193.78.46
+#require valid-user
+#satisfy any
+#</Limit>
+
+# ----------------------------------------------------------------------
+# Webfont access
+# ----------------------------------------------------------------------
+# Allow access from all domains for webfonts.
+# Alternatively you could only whitelist your
+# subdomains like "subdomain.example.com".
+#<IfModule mod_headers.c>
+#  <FilesMatch "\.(ttf|ttc|otf|eot|woff|font.css|css)$">
+#    Header set Access-Control-Allow-Origin "*"
+#  </FilesMatch>
+#</IfModule>

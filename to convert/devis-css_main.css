@@ -1,0 +1,26 @@
+#lens_popup .modal-dialog
+{
+  width: 50%;
+} 
+#ordo_popup .modal-dialog
+{
+  width: 75%;
+} 
+
+#commandes_mag_edit_popup .modal-dialog
+{
+  width: 75%;
+} 
+
+
+#client_popup .modal-dialog
+{
+  -webkit-overflow-scrolling: touch;
+}
+
+.vcenter 
+{
+    display: inline-block;
+    vertical-align: middle;
+    margin-top:9px;
+}
