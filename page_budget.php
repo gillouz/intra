@@ -14,25 +14,28 @@ echo "<div class='container'>";
 
 echo nano\quickEdit("budget",["mode"=>"form"]);
 
+echo "<div class='col-xs-6'>Total: <span id='total_projet'></span> Diff: <span id='diff_projet'></span></div>";
+
 // Close container
 echo "</div>";
 
 echo "<script>
 
-budget_ligne_save_callback=function()
+budget_projet_save_callback=function()
 {
     var n;
     var sum=0;
 
-    console.log(schemas.budget.data[schemas.budget.ix]);
+    lignes=schemas.budget_projet.data;
 
-    lignes=schemas.budget_ligne.data;
-
-    for(n in lignes) if(lignes[n]._status<9) sum+=lignes[n].montant;
-
-    console.log(sum);
+    for(n in lignes) if(lignes[n]._status<9) sum+=Math.round(parseFloat(lignes[n].montant)*100)/100;
     
-    if(sum==schemas.budget.data[schemas.budget.ix].montant)
+    //sum=sum*1000)/1000;
+    
+    $('#total_projet').html(sum);
+    $('#diff_projet').html(Math.round((schemas.budget.data[schemas.budget.ix].montant_chf-sum)*100)/100);
+    
+    if(sum==schemas.budget.data[schemas.budget.ix].montant_chf)
     {
         schemas.budget.data[schemas.budget.ix].reparti=1;
         document.budget_edit_form.reparti.checked=true;
@@ -43,7 +46,9 @@ budget_ligne_save_callback=function()
         document.budget_edit_form.reparti.checked=false;
     }
     
-    nano.save('budget',[schemas.budget.data[schemas.budget.ix]],{});  
+    callback=function(){};
+    
+    nano.save('budget',[schemas.budget.data[schemas.budget.ix]],callback);  
 
 }
 

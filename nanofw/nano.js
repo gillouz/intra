@@ -68,6 +68,9 @@ nano.txt=function(txt)
 // this function is used to call the ajax script  
 nano.ajax=function(data,url,callback)
 {
+  
+  console.log(callback);
+  
   var xhr_object = null;
   var reply;
   
@@ -602,6 +605,11 @@ nano.form_prepare=function(form,nano_mode,default_values)
   }
 }
 
+nano.round=function (num,round)
+{
+  return Math.round(num*(1/round))/(1/round);
+}
+
 nano.form_load=function(json,form)
 {
   var schema=schemas[form.attributes.nano_schema.value];
@@ -620,6 +628,9 @@ nano.form_load=function(json,form)
       {
         el=form[schema.structure[s].name];
         value=json[schema.structure[s].name];
+	
+	if(schema.structure[s].round) value=nano.round(value,schema.structure[s].round);
+	
 	nano.load_field(el,value);
       }
     }

@@ -113,6 +113,17 @@ $schemas->budget_projet=
       "display"=>["list", "form", "div"] 
     ],
     [
+      "name"=>"montant", 
+      "type"=>"float",
+      "regex"=>"^.*$", 
+      "value"=>"!!DATA.budget.montant_chf.END!!",
+      "optional"=>false, 
+      "col"=>"col-xs-3", 
+      "clearall"=>false, 
+      "label"=>nano\lbl("montant"),
+      "display"=>["list", "form", "div","find"]
+    ],
+    [
       "name"=>"remarque", 
       "type"=>"string",
       "regex"=>"^.*$", 
@@ -123,19 +134,64 @@ $schemas->budget_projet=
       "label"=>nano\lbl("remarque"),
       "display"=>["list", "form", "div","find"]
     ],
+  ]
+]; 
+
+$schemas->budget_ligne=
+[
+  "name"=>"budget_ligne",
+  "database"=>"bi",
+  "table"=>"f_budget_ligne",
+  "structure"=>
+  [
     [
-      "name"=>"montant", 
+      "name"=>"budget_id", 
+      "type"=>"key",
+      "value"=>"!!DATA.budget.END!!",
+      "schema"=>"budget",
+      "regex"=>"^.*$", 
+      "optional"=>true, 
+      "col"=>"col-xs-3", 
+      "clearall"=>false, 
+      "label"=>nano\lbl("facture"), 
+      "display"=>["list", "form", "div"] 
+    ],
+    [
+      "name"=>"montant_chf", 
       "type"=>"float",
       "regex"=>"^.*$", 
-      "value"=>"!!DATA.budget.montant.END!!",
+      "value"=>"!!DATA.budget.montant_chf.END!!",
       "optional"=>false, 
       "col"=>"col-xs-3", 
       "clearall"=>false, 
       "label"=>nano\lbl("montant"),
       "display"=>["list", "form", "div","find"]
-    ]
+    ],
+    [
+      "name"=>"compte_1", 
+      "type"=>"number",
+      "regex"=>"^.*$", 
+      "value"=>"",
+      "optional"=>true, 
+      "col"=>"col-xs-3", 
+      "clearall"=>false, 
+      "label"=>nano\lbl("compte"),
+      "display"=>["list", "form", "div","find"]
+    ],
+    [
+      "name"=>"division", 
+      "type"=>"number",
+      "regex"=>"^.*$", 
+      "value"=>"",
+      "optional"=>true, 
+      "col"=>"col-xs-3", 
+      "clearall"=>false, 
+      "label"=>nano\lbl("division"),
+      "display"=>["list", "form", "div","find"]
+    ],
   ]
 ]; 
+
 
 /*
   [
@@ -182,8 +238,19 @@ $schemas->budget=
       "optional"=>false, 
       "col"=>"col-xs-2", 
       "clearall"=>false, 
-      "label"=>nano\lbl("nr_facture"),
+      "label"=>nano\lbl("nr_facture_abacus"),
       "display"=>["list", "form", "div","find","concat"]
+    ],
+    [
+      "name"=>"facture_ref", 
+      "type"=>"string",
+      "regex"=>"^.*$", 
+      "value"=>"",
+      "optional"=>false, 
+      "col"=>"col-xs-2", 
+      "clearall"=>false, 
+      "label"=>nano\lbl("nr_facture_fournisseur"),
+      "display"=>["list", "form", "div","find"]
     ],
     [
       "name"=>"annee", 
@@ -194,6 +261,17 @@ $schemas->budget=
       "col"=>"col-xs-2", 
       "clearall"=>false, 
       "label"=>nano\lbl("annee"),
+      "display"=>["list", "form", "div","find"]
+    ],
+    [
+      "name"=>"mois", 
+      "type"=>"number",
+      "regex"=>"^[0-9]{4}$", 
+      "value"=>"",
+      "optional"=>false, 
+      "col"=>"col-xs-2", 
+      "clearall"=>false, 
+      "label"=>nano\lbl("mois"),
       "display"=>["list", "form", "div","find"]
     ],
     [
@@ -213,7 +291,7 @@ $schemas->budget=
       "type"=>"string",
       "regex"=>"^.*$", 
       "optional"=>false,
-      "col"=>"col-xs-6", 
+      "col"=>"col-xs-10", 
       "clearall"=>false, 
       "label"=>nano\lbl("text"), 
       "display"=>["list","find", "form", "div"] 
@@ -224,7 +302,7 @@ $schemas->budget=
       "type"=>"string",
       "regex"=>"^.*$", 
       "optional"=>false,
-      "col"=>"col-xs-6", 
+      "col"=>"col-xs-2", 
       "clearall"=>false, 
       "label"=>nano\lbl("personne"), 
       "display"=>["list","find", "form", "div"] 
@@ -241,6 +319,17 @@ $schemas->budget=
       "display"=>["list", "form", "div","find"]
     ],
     [
+      "name"=>"montant_chf", 
+      "type"=>"float",
+      "regex"=>"^.*$", 
+      "value"=>"",
+      "optional"=>false, 
+      "col"=>"col-xs-2", 
+      "clearall"=>false, 
+      "label"=>nano\lbl("montant_chf"),
+      "display"=>["list", "form", "div","find"]
+    ],
+    [
       "name"=>"reparti",
       "label"=>nano\lbl("repartition_ok"),
       "type"=>"boolean",
@@ -248,10 +337,10 @@ $schemas->budget=
       "optional"=>false, 
       "col"=>"col-xs-2", 
       "clearall"=>false,
-      "display"=>["form","find"]
+      "display"=>["form"]
     ],
     [
-      "name"=>"lignes",
+      "name"=>"projet",
       "value"=>"",
       "type"=>"relation",
       "key"=>"budget",
@@ -260,11 +349,24 @@ $schemas->budget=
       "optional"=>false,
       "col"=>"col-xs-3", 
       "clearall"=>false, 
-      "label"=>nano\lbl("lignes"), 
+      "label"=>nano\lbl("repartition projet"), 
+      "display"=>["find", "list", "form", "div"] 
+    ],
+    [
+      "name"=>"lignes",
+      "value"=>"",
+      "type"=>"relation",
+      "key"=>"budget_id",
+      "schema"=>"budget_ligne",
+      "regex"=>"^[0-9]*$", 
+      "optional"=>false,
+      "col"=>"col-xs-3", 
+      "clearall"=>false, 
+      "label"=>nano\lbl("repartition compta"), 
       "display"=>["find", "list", "form", "div"] 
     ],
    ],
-   "default_query"=>[ "annee"=>2016,  "\$limit"=>100 ] ,
+   "default_query"=>[ "annee"=>2016,  "\$limit"=>100, "\$orderby"=>[ "reparti"=>["\$way"=>"asce"], "fournisseur"=>["\$way"=>"asce"], "date_facture"=>["\$way"=>"asce"] ]  ] ,
 ];
 
 
@@ -719,9 +821,20 @@ $schemas->client=
       "enum"=>["M","MA"],
       "regex"=>"^[a-za-z']*$", 
       "optional"=>false, 
-      "col"=>"col-xs-2", 
+      "col"=>"col-xs-6 col-md-3", 
       "clearall"=>false,
       "display"=>["list", "form", "div","concat"]
+    ],
+    [ 
+      "name"=>"clientdepuis",
+      "label"=>nano\lbl("clientdepuis"), 
+      "type"=>"date",
+      "disabled"=>true,
+      "regex"=>"^.*$", 
+      "optional"=>true, 
+      "col"=>"col-xs-6 col-md-3 col-md-offset-6", 
+      "clearall"=>false,
+      "display"=>["form"]
     ],
     [ 
       "name"=>"nom", 
@@ -729,8 +842,8 @@ $schemas->client=
       "type"=>"string", 
       "regex"=>"^[a-za-z']*$", 
       "optional"=>false, 
-      "col"=>"col-xs-3", 
-      "clearall"=>false,
+      "col"=>"col-xs-6 col-md-5", 
+      "clearall"=>true,
       "display"=>["list", "form", "div","find","concat"]
     ],
     [ 
@@ -739,7 +852,7 @@ $schemas->client=
       "type"=>"string",
       "regex"=>"^[a-za-z']*$", 
       "optional"=>false, 
-      "col"=>"col-xs-3", 
+      "col"=>"col-xs-6 col-md-4", 
       "clearall"=>false,
       "display"=>["list", "form", "div","find","concat"]
     ],   
@@ -749,20 +862,9 @@ $schemas->client=
       "type"=>"date",
       "regex"=>"^[0-9]{4}-[0-9]{2}-[0-9]{2}$", 
       "optional"=>false, 
-      "col"=>"col-xs-2", 
+      "col"=>"col-xs-12 col-md-3", 
       "clearall"=>false,
       "display"=>["list", "form", "div"]
-    ],
-    [ 
-      "name"=>"clientdepuis",
-      "label"=>nano\lbl("clientdepuis"), 
-      "type"=>"date",
-      "disabled"=>true,
-      "regex"=>"^.*$", 
-      "optional"=>true, 
-      "col"=>"col-xs-2", 
-      "clearall"=>false,
-      "display"=>["form"]
     ],
     [ 
       "name"=>"adresse1",
@@ -770,7 +872,7 @@ $schemas->client=
       "type"=>"string", 
       "regex"=>"^.*$", 
       "optional"=>true, 
-      "col"=>"col-xs-5", 
+      "col"=>"col-xs-8 col-md-5", 
       "clearall"=>false,
       "display"=>["form"]
     ],
@@ -780,7 +882,7 @@ $schemas->client=
       "type"=>"string", 
       "regex"=>"^.*$", 
       "optional"=>true, 
-      "col"=>"col-xs-3", 
+      "col"=>"col-xs-4 col-md-2", 
       "clearall"=>false,
       "display"=>["form"]
     ],
@@ -790,7 +892,7 @@ $schemas->client=
       "type"=>"string", 
       "regex"=>"^.*$", 
       "optional"=>true, 
-      "col"=>"col-xs-4", 
+      "col"=>"col-xs-12 col-md-5", 
       "clearall"=>false,
       "display"=>["form"]
     ],
@@ -832,7 +934,7 @@ $schemas->client=
       "type"=>"string", 
       "regex"=>"^\+[0-9]*$", 
       "optional"=>true, 
-      "col"=>"col-xs-3", 
+      "col"=>"col-md-3 col-xs-6", 
       "clearall"=>true,
       "display"=>["list", "form"]
     ],
@@ -842,7 +944,7 @@ $schemas->client=
       "type"=>"string", 
       "regex"=>"^\+[0-9]*$", 
       "optional"=>true, 
-      "col"=>"col-xs-3", 
+      "col"=>"col-md-3 col-xs-6", 
       "clearall"=>false,
       "display"=>["form"]
     ],
@@ -852,7 +954,7 @@ $schemas->client=
       "type"=>"string" ,
       "regex"=>"^\+[0-9]*$",
       "optional"=>true, 
-      "col"=>"col-xs-3", 
+      "col"=>"col-md-3 col-xs-6", 
       "clearall"=>false,
       "display"=>["list", "form"]
     ],
@@ -862,7 +964,7 @@ $schemas->client=
       "type"=>"string",
       "regex"=>"^[a-za-z0-9.-_]*@[a-za-z0-9-_]*.[a-z0-9a-z]*$",
       "optional"=>true, 
-      "col"=>"col-xs-3", 
+      "col"=>"col-md-3 col-xs-6", 
       "clearall"=>false,
       "display"=>["list", "form"]
     ],
@@ -872,7 +974,7 @@ $schemas->client=
       "type"=>"boolean",
       "regex"=>"^[0-1]$",
       "optional"=>false, 
-      "col"=>"col-xs-3", 
+      "col"=>"col-md-3 col-xs-6", 
       "clearall"=>true,
       "display"=>["form"]
     ],
@@ -882,7 +984,7 @@ $schemas->client=
       "type"=>"boolean",
       "regex"=>"^[0-1]$",
       "optional"=>false, 
-      "col"=>"col-xs-3", 
+      "col"=>"col-md-3 col-xs-6", 
       "clearall"=>false,
       "display"=>["form"]
     ],
@@ -892,7 +994,7 @@ $schemas->client=
       "type"=>"boolean",
       "regex"=>"^[0-1]$",
       "optional"=>false, 
-      "col"=>"col-xs-3", 
+      "col"=>"col-md-3 col-xs-6", 
       "clearall"=>false,
       "display"=>["form"]
     ],
@@ -902,7 +1004,7 @@ $schemas->client=
       "type"=>"boolean",
       "regex"=>"^[0-1]$",
       "optional"=>false, 
-      "col"=>"col-xs-3", 
+      "col"=>"col-md-3 col-xs-6", 
       "clearall"=>false,
       "display"=>["form"]
     ],
@@ -912,7 +1014,7 @@ $schemas->client=
       "type"=>"string", 
       "regex"=>"^.*$", 
       "optional"=>true, 
-      "col"=>"col-xs-3", 
+      "col"=>"col-md-3 col-xs-6", 
       "clearall"=>false,
       "display"=>["form"]
     ],
@@ -922,7 +1024,7 @@ $schemas->client=
       "type"=>"string", 
       "regex"=>"^.*$", 
       "optional"=>true, 
-      "col"=>"col-xs-3", 
+      "col"=>"col-md-3 col-xs-6", 
       "clearall"=>false,
       "display"=>["form"]
     ],
@@ -932,7 +1034,7 @@ $schemas->client=
       "type"=>"string", 
       "regex"=>"^.*$", 
       "optional"=>true, 
-      "col"=>"col-xs-3", 
+      "col"=>"col-md-3 col-xs-6", 
       "clearall"=>false,
       "display"=>["form"]
     ],
@@ -942,7 +1044,7 @@ $schemas->client=
       "type"=>"string", 
       "regex"=>"^.*$", 
       "optional"=>true, 
-      "col"=>"col-xs-3", 
+      "col"=>"col-md-3 col-xs-6", 
       "clearall"=>false,
       "display"=>["form"]
     ],
@@ -1870,6 +1972,7 @@ $schemas->mesures=
     [
       "name"=>"FPDR", 
       "type"=>"float",
+      "round"=>0.5,
       "regex"=>"^[-+]?[0-9]*\.?[0-9]*$", 
       "optional"=>false, 
       "col"=>"col-xs-3", 
@@ -1880,6 +1983,7 @@ $schemas->mesures=
     [
       "name"=>"FPDL", 
       "type"=>"float",
+      "round"=>0.5,
       "regex"=>"^[-+]?[0-9]*\.?[0-9]*$",
       "optional"=>false, 
       "col"=>"col-xs-3", 
@@ -1890,6 +1994,7 @@ $schemas->mesures=
     [
       "name"=>"FHR", 
       "type"=>"float",
+      "round"=>0.5,
       "regex"=>"^[-+]?[0-9]*\.?[0-9]*$",
       "optional"=>false, 
       "col"=>"col-xs-3", 
@@ -1900,6 +2005,7 @@ $schemas->mesures=
     [
       "name"=>"FHL", 
       "type"=>"float",
+      "round"=>0.5,
       "regex"=>"^[-+]?[0-9]*\.?[0-9]*$", 
       "optional"=>false, 
       "col"=>"col-xs-3", 
@@ -1918,6 +2024,7 @@ $schemas->mesures=
     [
       "name"=>"A", 
       "type"=>"float",
+      "round"=>0.5,
       "regex"=>"^[-+]?[0-9]*\.?[0-9]*$",
       "optional"=>false, 
       "col"=>"col-xs-3", 
@@ -1928,6 +2035,7 @@ $schemas->mesures=
     [
       "name"=>"B", 
       "type"=>"float",
+      "round"=>0.5,
       "regex"=>"^[-+]?[0-9]*\.?[0-9]*$",
       "optional"=>false, 
       "col"=>"col-xs-3", 
@@ -1938,6 +2046,7 @@ $schemas->mesures=
     [
       "name"=>"DBL", 
       "type"=>"float",
+      "round"=>0.5,
       "regex"=>"^[-+]?[0-9]*\.?[0-9]*$",
       "optional"=>false, 
       "col"=>"col-xs-3", 
@@ -1948,6 +2057,7 @@ $schemas->mesures=
     [
       "name"=>"EDR", 
       "type"=>"float",
+      "round"=>0.5,
       "regex"=>"^[-+]?[0-9]*\.?[0-9]*$",
       "optional"=>false, 
       "col"=>"col-xs-3", 
@@ -1958,6 +2068,7 @@ $schemas->mesures=
     [
       "name"=>"EDL", 
       "type"=>"float",
+      "round"=>0.5,
       "regex"=>"^[-+]?[0-9]*\.?[0-9]*$",
       "optional"=>false, 
       "col"=>"col-xs-3", 
@@ -1979,6 +2090,7 @@ $schemas->mesures=
     [
       "name"=>"PT", 
       "type"=>"float",
+      "round"=>0.5,
       "regex"=>"^[-+]?[0-9]*\.?[0-9]*$",
       "optional"=>true, 
       "col"=>"col-xs-3", 
@@ -1989,6 +2101,7 @@ $schemas->mesures=
     [
       "name"=>"BVD", 
       "type"=>"float",
+      "round"=>0.5,
       "regex"=>"^[-+]?[0-9]*\.?[0-9]*$",
       "optional"=>true, 
       "col"=>"col-xs-3", 
@@ -1999,6 +2112,7 @@ $schemas->mesures=
     [
       "name"=>"FWA", 
       "type"=>"float",
+      "round"=>0.5,
       "regex"=>"^[-+]?[0-9]*\.?[0-9]*$",
       "optional"=>true, 
       "col"=>"col-xs-3", 
@@ -2020,6 +2134,7 @@ $schemas->mesures=
     [
       "name"=>"NPDR", 
       "type"=>"float",
+      "round"=>0.5,
       "regex"=>"^[-+]?[0-9]*\.?[0-9]*$",
       "optional"=>true, 
       "col"=>"col-xs-3", 
@@ -2029,6 +2144,7 @@ $schemas->mesures=
     ],[
       "name"=>"NPDL", 
       "type"=>"float",
+      "round"=>0.5,
       "regex"=>"^[-+]?[0-9]*\.?[0-9]*$",
       "optional"=>true, 
       "col"=>"col-xs-3", 
@@ -2038,6 +2154,7 @@ $schemas->mesures=
     ],[
       "name"=>"UF", 
       "type"=>"float",
+      "round"=>0.5,
       "regex"=>"^[-+]?[0-9]*\.?[0-9]*$",
       "optional"=>true, 
       "col"=>"col-xs-3", 
@@ -2047,6 +2164,7 @@ $schemas->mesures=
     ],[
       "name"=>"RD", 
       "type"=>"float",
+      "round"=>0.5,
       "regex"=>"^[-+]?[0-9]*\.?[0-9]*$",
       "optional"=>true, 
       "col"=>"col-xs-3", 
@@ -2056,6 +2174,7 @@ $schemas->mesures=
     ],[
       "name"=>"IR", 
       "type"=>"float",
+      "round"=>0.5,
       "regex"=>"^[-+]?[0-9]*\.?[0-9]*$",
       "optional"=>true, 
       "col"=>"col-xs-3", 
@@ -2065,6 +2184,7 @@ $schemas->mesures=
     ],[
       "name"=>"IL", 
       "type"=>"float",
+      "round"=>0.5,
       "regex"=>"^[-+]?[0-9]*\.?[0-9]*$",
       "optional"=>true, 
       "col"=>"col-xs-3", 
