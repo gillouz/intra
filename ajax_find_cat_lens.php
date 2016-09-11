@@ -8,6 +8,8 @@ header('Content-type: text/html; charset=utf-8');
 $param="";
 $html="";
 
+//test
+
 if(isset($_POST['param'])) $param = $_POST['param']; 
 
 
